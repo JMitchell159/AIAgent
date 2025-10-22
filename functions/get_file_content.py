@@ -2,9 +2,9 @@ import os
 from config import CHARACTER_LIMIT
 
 def get_file_content(working_directory, file_path):
-    full_path = os.path.join(working_directory, file_path)
     result = ""
     try:
+        full_path = os.path.join(working_directory, file_path)
         if os.path.commonpath([os.path.abspath(working_directory)]) != os.path.commonpath([os.path.abspath(working_directory), os.path.abspath(full_path)]):
             return f'Error: Cannot read "{file_path}" as it is outside the permitted working directory'
         if os.path.isdir(full_path):
