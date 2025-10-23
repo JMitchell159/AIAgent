@@ -20,14 +20,14 @@ def run_python_file(working_directory, file_path, args=[]):
             run += args
         process = subprocess.run(run, timeout=30, capture_output=True, cwd=working_directory, text=True)
         result = ""
-        if process.stdout != "":
-            result += f"STDOUT: {process.stdout}\n"
-        else:
-            return f"No output produced."
         if process.stderr != "":
             result += f"STDERR: {process.stderr}\n"
         if process.returncode != 0:
             result += f"Process exited with code {process.returncode}"
+        if process.stdout != "":
+            result += f"STDOUT: {process.stdout}\n"
+        else:
+            return result+"No output produced."
         return result
     except Exception as e:
         return f"Error: executing Python file: {e}"
@@ -47,7 +47,7 @@ schema_run_python_file = types.FunctionDeclaration(
                 items=types.Schema(
                     type=types.Type.STRING,
                 ),
-                description="Additional arguments for running the python file. If not provided, the file will either run normally or return the correct arguments to specify.",
+                description="Optional arguments for running the python file.",
             ),
         },
     ),

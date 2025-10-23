@@ -8,6 +8,7 @@ from functions.run_python_file import schema_run_python_file
 from functions.write_file import schema_write_file
 import sys
 from config import SYSTEM_PROMPT
+from call_function import call_function
 
 load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
@@ -37,4 +38,8 @@ if verbose:
 
 print(response.text)
 for call in response.function_calls:
-    print(f"Calling function: {call.name}({call.args})")
+    resp = call_function(call, verbose)
+    if resp.parts[0].function_response.response is None:
+        raise Exception("No response from function call")
+    if verbose:
+        print(f"-> {resp.parts[0].function_response.response}")
